@@ -1,27 +1,16 @@
 import {socket} from "../context/context.jsx"
 
-function sendMessage(text, onMessageSent) {
+function sendMessage(text) {
     const threadId = Number(sessionStorage.getItem("threadId"))
-    const sender = sessionStorage.getItem("username") || "customer"
 
     if (!threadId || threadId === 0) {
         console.error("No valid thread ID found")
         return
     }
-
     const messageData = {
         thread_id: threadId,
         text,
-        sender
-    }
-    if (onMessageSent) {
-        onMessageSent({
-            thread_id: threadId,
-            text_original: text,
-            text,
-            sender,
-            created_at: new Date().toISOString()
-        })
+        sender: "CUSTOMER"
     }
 
     socket.emit("send_message", messageData)

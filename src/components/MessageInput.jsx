@@ -1,16 +1,13 @@
 import {sendMessage} from "../service/messageService.jsx";
-import {useState, useContext} from "react";
-import {MessageContext} from "../context/context.jsx";
-
+import {useState} from "react";
 
 function MessageInput(){
     const [text, setText] = useState("")
-    const { addMessage } = useContext(MessageContext)
 
     function handleSubmit(e) {
         e.preventDefault()
         if (!text.trim()) return
-        sendMessage(text, addMessage)
+        sendMessage(text)
         setText("")
     }
 

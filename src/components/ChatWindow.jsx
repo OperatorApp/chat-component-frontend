@@ -1,18 +1,12 @@
-import {useThread} from "../hooks/useThread.jsx";
 import ChatBubble from "./ChatBubble.jsx";
-import { useEffect, useRef, useContext } from "react";
-import { MessageContext } from "../context/context.jsx";
+import { useEffect, useRef } from "react";
 
-function ChatWindow() {
-    const { thread, messages: threadMessages, loading, error } = useThread()
-    const { messages: contextMessages } = useContext(MessageContext)
+function ChatWindow({ thread, messages, loading, error }) {
     const messagesEndRef = useRef(null)
-
-    const allMessages = [...(threadMessages ?? []), ...(contextMessages ?? [])]
 
     useEffect(() => {
         messagesEndRef.current?.scrollIntoView({ behavior: "smooth" })
-    }, [allMessages])
+    }, [messages])
 
     if (loading) return <div>Loading...</div>
     if (error) return <div style={{ color: "red" }}>Error: {error}</div>
@@ -29,10 +23,10 @@ function ChatWindow() {
             padding: "10px"
         }}>
             <div style={{ flex: 1, overflowY: "auto", marginBottom: "10px" }}>
-                {allMessages.length === 0 ? (
+                {messages.length === 0 ? (
                     <div style={{ textAlign: "center", color: "#999" }}>No messages yet</div>
                 ) : (
-                    allMessages.map((message, idx) => (
+                    messages.map((message, idx) => (
                         <ChatBubble
                             key={message.id || idx}
                             text={message.text_original || message.text}
