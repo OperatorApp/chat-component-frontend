@@ -29,7 +29,10 @@ function ChatWindow({ thread, messages, loading, error }) {
                     messages.map((message, idx) => (
                         <ChatBubble
                             key={message.id || idx}
-                            text={message.text_original || message.text}
+                            text={message.sender === "CUSTOMER"
+                                ? ( message.text_original || message.text)
+                                : (message.text_translated ||message.text_original || message.text)
+                            }
                             sender={message.sender}
                             timestamp={message.created_at}
                         />
