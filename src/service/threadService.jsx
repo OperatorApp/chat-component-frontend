@@ -1,13 +1,21 @@
 
 const BASE_URL = import.meta.env.VITE_API_URL
-
+const API_KEY = import.meta.env.VITE_API_KEY_FOR_OPERATOR
 
 async function getMessagesFromThread(username) {
     if (!username) {
         throw new Error("Username is required")
     }
 
-    const threadRes = await fetch(`${BASE_URL}/thread/username/${username}`)
+    const threadRes = await fetch(`${BASE_URL}/thread/username/${username}`,
+        {
+            headers: {
+                'Content-Type': 'application/json',
+                "x-api-key" : API_KEY
+            },
+
+        })
+
     if (!threadRes.ok) {
         throw new Error(`Failed to fetch thread: ${threadRes.status}`)
     }
@@ -23,7 +31,12 @@ async function getMessagesFromThread(username) {
 
     sessionStorage.setItem("threadId", String(thread.id))
 
-    const messagesRes = await fetch(`${BASE_URL}/thread/${thread.id}/messages`)
+    const messagesRes = await fetch(`${BASE_URL}/thread/${thread.id}/messages`,{
+        headers: {
+            'Content-Type': 'application/json',
+            "x-api-key" : API_KEY
+        }
+    })
     if (!messagesRes.ok) {
         throw new Error(`Failed to fetch messages: ${messagesRes.status}`)
     }

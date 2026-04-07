@@ -16,7 +16,8 @@ async function generateAndSend(username) {
 
     const response = await fetch(`${BASE_URL}/ai/customerSimulation`, {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        headers: { "Content-Type": "application/json",
+        "x-api-key": import.meta.env.VITE_API_KEY_FOR_OPERATOR},
         body: JSON.stringify({
             systemPrompt: `${user}\n${general}`,
             chatHistory
@@ -28,4 +29,25 @@ async function generateAndSend(username) {
     return data.reply;
 }
 
-export { generateAndSend };
+
+async function pushKnowledge(content) {
+    const apiKey = import.meta.env.VITE_API_KEY_FOR_OPERATOR
+
+    const response = await fetch(`${BASE_URL}/ai/knowledge`, {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+            "x-api-key": apiKey
+        },
+        body: JSON.stringify({ content })
+    })
+
+    const data = await response.json()
+    if (!data.success) throw new Error(data.error)
+    return data
+}
+
+
+
+
+export { generateAndSend, pushKnowledge };

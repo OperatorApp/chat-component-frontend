@@ -1,10 +1,13 @@
 import {io} from "socket.io-client";
 
+const VITE_API_URL = import.meta.env.VITE_API_URL || "http://localhost:3000"
+const VITE_API_KEY = import.meta.env.VITE_API_KEY_FOR_OPERATOR || "123"
+
 const randomUsers = ["funnyGuy", "Anonymous",
-    "Bussiness GUUYY", "ThAtGuY", "NotThisOneGuy", "NifzGuy", "Kaylen", "Tristan", "Omar"]
+    "Bussiness GUUYY", "ThAtGuY", "NotThisOneGuy", "NifzGuy", "Kaylen", "Tristan", "Omar", "TestGuy"]
 
 function decideUser(){
-    let idx = Math.floor(Math.random() * 3) +5
+    let idx = Math.floor(Math.random() * 3) +6
     sessionStorage.setItem("username", randomUsers[idx])
 }
 
@@ -83,10 +86,10 @@ const scenariosPromts = {
 }
 
 
-export const socket = io("http://localhost:3001/", {
+export const socket = io(VITE_API_URL, {
     reconnectionDelayMax: 10000,
     auth: {
-        token: "123"
+        token: VITE_API_KEY
     },
     query: {
         "my-key": "my-value"
